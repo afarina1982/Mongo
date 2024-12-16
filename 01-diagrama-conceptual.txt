@@ -1,0 +1,9 @@
+erDiagram
+
+    Miembros ||--|{ Clases : "se inscribe"
+    Clases ||--|{ Entrenadores : "es dictada por"
+    Clases ||--|{ Sucursales : "se dicta en"
+    Miembros ||--|{ Reservas : "realiza"
+    Equipos ||--o{ Sucursales : "está en"
+    Equipos ||--|{ Reservas : "es reservado por"
+    Miembros ||--o{ Membresias : "tiene"

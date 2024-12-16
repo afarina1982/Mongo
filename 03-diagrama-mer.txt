@@ -1,0 +1,138 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table Ciudades {
+    ID_Ciudad integer [primary key]
+    Ciudad varchar(50)
+}
+
+Table Sucursales {
+    ID_Sucursal varchar(12) [primary key]
+    Direccion varchar(100)
+    Horario_Apertura varchar(5) 
+    Horario_Cierre varchar(5)    
+    ID_Ciudad integer [ref: > Ciudades.ID_Ciudad]
+}
+
+Table Membresias {
+    ID_Membresia integer [primary key]
+    Nombre_Plan varchar(50)
+    Precio decimal(10,0)
+    Beneficios text
+}
+
+Table Miembros {
+    RUT_Miembro varchar(12) [primary key]
+    Nombre varchar(25)
+    Apellido varchar(25)
+    Fecha_Nacimiento date
+    Correo_Electronico varchar(50)
+    Fecha_Inscripcion date
+    Tipo_Membresia integer [ref: > Membresias.ID_Membresia]
+}
+
+Table Entrenadores {
+    RUT_Entrenador varchar(12) [primary key]
+    Nombre varchar(25)
+    Apellido varchar(25)
+    Fecha_Nacimiento date
+    Correo_Electronico varchar(50)
+    Especialidad varchar(25)
+}
+
+Table Certificaciones {
+    ID_Certificacion varchar(6) [primary key]
+    Nombre_Certificacion varchar(50)
+    Institucion varchar(50)
+    Fecha_Obtencion date
+}
+
+Table Clases {
+    ID_Clase integer [primary key]
+    Nombre_Clase varchar(50)
+    Nivel_Dificultad varchar(50)
+    Capacidad_Maxima integer
+}
+
+Table Equipos {
+    ID_Equipo integer [primary key]
+    Tipo_Equipo varchar(50)
+    Marca varchar(50)
+}
+
+Table Reservas {
+    ID_Reserva integer [primary key]
+    ID_Equipo integer [ref: > Equipos.ID_Equipo]
+    ID_Sucursal varchar(12) [ref: > Sucursales.ID_Sucursal]
+    RUT_Miembro varchar(12) [ref: > Miembros.RUT_Miembro]
+    Fecha_Reserva date
+    Hora_Reserva varchar(5) // Cambiado de time a varchar
+}
+
+Table Clase_Entrenador {
+    ID_Clase integer [ref: > Clases.ID_Clase]
+    RUT_Entrenador varchar(12) [ref: > Entrenadores.RUT_Entrenador]
+    ID_Sucursal varchar(12) [ref: > Sucursales.ID_Sucursal]
+    Dia_Semana varchar(15)
+    Hora_Inicio varchar(5) 
+    PRIMARY KEY (ID_Clase, RUT_Entrenador, ID_Sucursal, Dia_Semana, Hora_Inicio) 
+}
+
+Table Clase_Sucursal {
+    ID_Clase integer [ref: > Clases.ID_Clase]
+    ID_Sucursal varchar(12) [ref: > Sucursales.ID_Sucursal]
+    PRIMARY KEY (ID_Clase, ID_Sucursal) 
+}
+
+Table Direcciones {
+    ID_Direccion integer [primary key]
+    Direccion varchar(100)
+    ID_Ciudad integer [ref: > Ciudades.ID_Ciudad]
+}
+
+Table Miembro_Direccion {
+    RUT_Miembro varchar(12) [ref: > Miembros.RUT_Miembro]
+    ID_Direccion integer [ref: > Direcciones.ID_Direccion]
+    PRIMARY KEY (RUT_Miembro, ID_Direccion) 
+}
+
+Table Entrenador_Direccion {
+    RUT_Entrenador varchar(12) [ref: > Entrenadores.RUT_Entrenador]
+    ID_Direccion integer [ref: > Direcciones.ID_Direccion]
+    PRIMARY KEY (RUT_Entrenador, ID_Direccion) 
+}
+
+Table Telefonos {
+    ID_Telefono integer [primary key]
+    Numero varchar(15)
+}
+
+Table Miembro_Telefono {
+    RUT_Miembro varchar(12) [ref: > Miembros.RUT_Miembro]
+    ID_Telefono integer [ref: > Telefonos.ID_Telefono]
+    PRIMARY KEY (RUT_Miembro, ID_Telefono) 
+}
+
+Table Entrenador_Telefono {
+    RUT_Entrenador varchar(12) [ref: > Entrenadores.RUT_Entrenador]
+    ID_Telefono integer [ref: > Telefonos.ID_Telefono]
+    PRIMARY KEY (RUT_Entrenador, ID_Telefono) 
+}
+
+Table Entrenador_Sucursal {
+    RUT_Entrenador varchar(12) [ref: > Entrenadores.RUT_Entrenador]
+    ID_Sucursal varchar(12) [ref: > Sucursales.ID_Sucursal]
+    PRIMARY KEY (RUT_Entrenador, ID_Sucursal) 
+}
+
+Table Miembro_Clase {
+    RUT_Miembro varchar(12) [ref: > Miembros.RUT_Miembro]
+    ID_Clase integer [ref: > Clases.ID_Clase]
+    PRIMARY KEY (RUT_Miembro, ID_Clase) 
+}
+
+Table Entrenador_Certificacion {
+    RUT_Entrenador varchar(12) [ref: > Entrenadores.RUT_Entrenador]
+    ID_Certificacion varchar(6) [ref: > Certificaciones.ID_Certificacion]
+    PRIMARY KEY (RUT_Entrenador, ID_Certificacion) 
+}
